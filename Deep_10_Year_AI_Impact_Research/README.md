@@ -1,6 +1,4 @@
-```markdown
 # The Agentic Shift: Navigating the AI Decade 2026–2036
-
 ## 📖 Overview
 This repository synthesizes deep research on the 10-year trajectory of Artificial Intelligence (2026–2036) and its profound impact on global economies, daily workflows, and career progression. The defining technological leap of this decade is the transition from **generative AI** (tools requiring constant human prompting) to **autonomous, agentic AI** (systems that independently set goals and execute complex, multi-step workflows).
 
@@ -68,4 +66,3 @@ The physical location of high-value knowledge work is decentralizing, reversing 
 * **Applied Systems:** MLOps courses via DeepLearning.AI, HuggingFace LLM tutorials, and hands-on Kaggle competitions.
 
 > **Continuous Upskilling:** Abandon the concept of a terminal education. With ~40% of job skills expected to change, plan for multiple continuous reskilling cycles.
-```

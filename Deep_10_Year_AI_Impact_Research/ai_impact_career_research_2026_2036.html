@@ -1,0 +1,546 @@
+
+<h2 class="sr-only">AI Impact Research for Career Planning 2026–2036: interactive deep research report</h2>
+<style>
+:root { --accent: #1D9E75; --accent2: #534AB7; --warn: #BA7517; --danger: #D85A30; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-size: 15px; }
+
+.report-header { padding: 2rem 0 1.5rem; border-bottom: 0.5px solid var(--color-border-tertiary); margin-bottom: 2rem; }
+.report-title { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+.report-sub { font-size: 13px; color: var(--color-text-secondary); }
+.report-meta { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; }
+.meta-pill { font-size: 11px; padding: 3px 10px; border-radius: 20px; border: 0.5px solid var(--color-border-secondary); color: var(--color-text-secondary); }
+
+.nav { display: flex; gap: 0; border-bottom: 0.5px solid var(--color-border-tertiary); margin-bottom: 2rem; overflow-x: auto; }
+.nav-btn { padding: 10px 16px; font-size: 13px; border: none; background: none; cursor: pointer; color: var(--color-text-secondary); border-bottom: 2px solid transparent; white-space: nowrap; transition: all .15s; }
+.nav-btn.active { color: var(--color-text-primary); border-bottom-color: var(--accent); font-weight: 500; }
+.nav-btn:hover:not(.active) { color: var(--color-text-primary); }
+
+.section { display: none; }
+.section.active { display: block; }
+
+.metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 2rem; }
+.metric-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 1rem; }
+.metric-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
+.metric-value { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
+.metric-sub { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
+
+.card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
+.card-title { font-size: 15px; font-weight: 500; margin-bottom: 8px; color: var(--color-text-primary); }
+.card-body { font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem; }
+
+.timeline { position: relative; padding-left: 24px; margin: 1rem 0; }
+.timeline::before { content: ''; position: absolute; left: 8px; top: 6px; bottom: 0; width: 0.5px; background: var(--color-border-tertiary); }
+.tl-item { position: relative; margin-bottom: 1.25rem; }
+.tl-dot { position: absolute; left: -20px; top: 4px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.tl-dot.warn { background: var(--warn); }
+.tl-dot.purple { background: var(--accent2); }
+.tl-year { font-size: 11px; font-weight: 500; color: var(--accent); margin-bottom: 2px; }
+.tl-year.warn { color: var(--warn); }
+.tl-year.purple { color: var(--accent2); }
+.tl-text { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
+.tl-text strong { font-weight: 500; color: var(--color-text-primary); }
+
+.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.bar-label { font-size: 12px; color: var(--color-text-secondary); min-width: 120px; }
+.bar-track { flex: 1; height: 6px; background: var(--color-background-secondary); border-radius: 3px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 3px; }
+.bar-val { font-size: 12px; font-weight: 500; color: var(--color-text-primary); min-width: 36px; text-align: right; }
+
+.badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 4px; margin: 2px 2px; }
+.badge-teal { background: #E1F5EE; color: #0F6E56; }
+.badge-purple { background: #EEEDFE; color: #3C3489; }
+.badge-amber { background: #FAEEDA; color: #854F0B; }
+.badge-coral { background: #FAECE7; color: #993C1D; }
+.badge-blue { background: #E6F1FB; color: #185FA5; }
+.badge-gray { background: #F1EFE8; color: #5F5E5A; }
+.badge-red { background: #FCEBEB; color: #A32D2D; }
+
+.risk-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 0.5px solid var(--color-border-tertiary); font-size: 13px; }
+.risk-row:last-child { border-bottom: none; }
+.risk-name { color: var(--color-text-primary); font-weight: 500; }
+.risk-pct { font-size: 12px; font-weight: 500; }
+
+.skill-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.skill-row:last-child { border-bottom: none; }
+.skill-rank { font-size: 11px; color: var(--color-text-secondary); min-width: 20px; }
+.skill-name { font-size: 13px; font-weight: 500; flex: 1; color: var(--color-text-primary); }
+.skill-trend { font-size: 11px; color: #1D9E75; }
+.skill-trend.high { color: #1D9E75; }
+.skill-trend.med { color: var(--warn); }
+
+.salary-table { width: 100%; font-size: 12px; border-collapse: collapse; }
+.salary-table th { text-align: left; font-weight: 500; color: var(--color-text-secondary); padding: 6px 8px; border-bottom: 0.5px solid var(--color-border-tertiary); font-size: 11px; }
+.salary-table td { padding: 7px 8px; border-bottom: 0.5px solid var(--color-border-tertiary); color: var(--color-text-primary); }
+.salary-table tr:last-child td { border-bottom: none; }
+.salary-table .hi { color: #1D9E75; font-weight: 500; }
+.salary-table .mid { color: var(--warn); font-weight: 500; }
+
+.path-step { display: flex; gap: 12px; padding: 12px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.path-step:last-child { border-bottom: none; }
+.step-num { min-width: 28px; height: 28px; border-radius: 50%; background: var(--color-background-secondary); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; color: var(--color-text-secondary); flex-shrink: 0; }
+.step-content .step-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+.step-content .step-desc { font-size: 12px; color: var(--color-text-secondary); line-height: 1.6; }
+
+.source-tag { font-size: 10px; background: var(--color-background-secondary); color: var(--color-text-secondary); border-radius: 3px; padding: 1px 5px; margin-left: 6px; vertical-align: middle; }
+
+.section-heading { font-size: 16px; font-weight: 500; color: var(--color-text-primary); margin: 1.5rem 0 0.75rem; }
+.section-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 1rem; }
+
+.accent-bar { border-left: 2px solid var(--accent); padding-left: 12px; margin: 1rem 0; }
+.accent-bar.warn { border-left-color: var(--warn); }
+.accent-bar.purple { border-left-color: var(--accent2); }
+.accent-bar p { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
+.accent-bar strong { color: var(--color-text-primary); font-weight: 500; }
+
+@media (max-width: 500px) { .two-col, .three-col { grid-template-columns: 1fr; } .bar-label { min-width: 90px; font-size: 11px; } }
+</style>
+
+<div class="report-header">
+  <div class="report-title">AI Impact Research: Career Intelligence Brief 2026–2036</div>
+  <div class="report-sub">Deep research synthesis — India focus, Prayagraj/Remote lens</div>
+  <div class="report-meta">
+    <span class="meta-pill">Sources: WEF · McKinsey · Goldman Sachs · NASSCOM · Deloitte · IMF</span>
+    <span class="meta-pill">Published: May 2026</span>
+    <span class="meta-pill">7 Sections · Actionable</span>
+  </div>
+</div>
+
+<div class="nav" id="nav">
+  <button class="nav-btn active" onclick="showSection('macro')">1. Macro Forecast</button>
+  <button class="nav-btn" onclick="showSection('sectors')">2. Sector Disruption</button>
+  <button class="nav-btn" onclick="showSection('india')">3. India Picture</button>
+  <button class="nav-btn" onclick="showSection('skills')">4. Skills & Roles</button>
+  <button class="nav-btn" onclick="showSection('salaries')">5. Salaries</button>
+  <button class="nav-btn" onclick="showSection('learning')">6. Learning Paths</button>
+  <button class="nav-btn" onclick="showSection('action')">7. Action Plan</button>
+</div>
+
+<div id="macro" class="section active">
+  <div class="metric-grid">
+    <div class="metric-card"><div class="metric-label">Jobs created by 2030</div><div class="metric-value" style="color:#1D9E75">170M</div><div class="metric-sub">WEF Future of Jobs 2025</div></div>
+    <div class="metric-card"><div class="metric-label">Jobs displaced by 2030</div><div class="metric-value" style="color:#D85A30">92M</div><div class="metric-sub">Net gain: +78M jobs</div></div>
+    <div class="metric-card"><div class="metric-label">Jobs impacted globally</div><div class="metric-value" style="color:#BA7517">300M</div><div class="metric-sub">Goldman Sachs estimate</div></div>
+    <div class="metric-card"><div class="metric-label">GDP boost from AI</div><div class="metric-value">+7%</div><div class="metric-sub">Global, by 2030</div></div>
+    <div class="metric-card"><div class="metric-label">AI economic value by 2030</div><div class="metric-value">$15.7T</div><div class="metric-sub">PwC; > China + India GDP</div></div>
+    <div class="metric-card"><div class="metric-label">Skills needing change</div><div class="metric-value">39%</div><div class="metric-sub">Of all workforce by 2030</div></div>
+  </div>
+
+  <div class="section-heading">AI capability timeline 2026–2036</div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2026 — Now</div>
+      <div class="tl-text"><strong>Agentic AI transition:</strong> 72% of enterprises use Gen AI (McKinsey). Agentic AI — systems that plan, tool-call, and execute multi-step tasks — is the dominant new paradigm. Entry-level white-collar roles already declining 20–25% in IT (EY). Voice AI and multi-agent orchestration are the defining trends.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot warn"></div>
+      <div class="tl-year warn">2027–2028 — Agentic Scale</div>
+      <div class="tl-text"><strong>Agentic AI at enterprise scale.</strong> Goldman Sachs projects agents replacing 7% of US roles by 2029. McKinsey: 2M US manufacturing jobs lost to automation. India GCCs hiring AI talent aggressively. First "weakly general AI" prediction median: Feb 2028 (1,700-forecaster survey). India AI talent pool projected at 1.25M.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot warn"></div>
+      <div class="tl-year warn">2029–2030 — Restructuring Phase</div>
+      <div class="tl-text"><strong>Major economic restructuring.</strong> WEF peak disruption window: 92M displaced, 170M new roles. McKinsey: 60–70% of tasks automatable. Humans shift to "orchestrators" of AI agent swarms. 14% of global workforce may need to change careers. AI contributes ~$13T incremental global GDP. India AI GDP contribution: $359–438B (EY).</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot purple"></div>
+      <div class="tl-year purple">2031–2035 — AI Deepening</div>
+      <div class="tl-text"><strong>Possible AGI-adjacent systems.</strong> Expert consensus: 50% probability threshold for AGI around 2035–2040 (researcher surveys). OpenAI CEO Altman: "superintelligence in a few thousand days." DeepMind/Google co-founders: AGI plausible ~2030. Key bottlenecks: power/infrastructure, alignment, regulatory approvals. McKinsey AI economic impact on India by 2035: $15.7T.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot purple"></div>
+      <div class="tl-year purple">2035–2036 — Decade Horizon</div>
+      <div class="tl-text"><strong>Transformed economy baseline.</strong> Most formal expert surveys place 50% AGI probability at 2040–2060; entrepreneurs cluster at 2030. Physical bottlenecks (energy, chips, compute) are binding constraints. India projected as global AI powerhouse with 1M+ skilled AI professionals. Human roles: ethics auditors, AI supervisors, domain specialists, creative and relationship roles.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Key bottlenecks slowing disruption</div>
+    <div class="card-body">
+      <span class="badge badge-coral">Power & infrastructure shortage</span>
+      <span class="badge badge-coral">11 GW US data center deficit (Goldman Sachs)</span>
+      <span class="badge badge-amber">AI alignment & safety unresolved</span>
+      <span class="badge badge-amber">Regulatory & institutional inertia</span>
+      <span class="badge badge-gray">Reliability gaps in agentic systems</span>
+      <span class="badge badge-gray">Physical presence requirement</span>
+      <span class="badge badge-blue">India: only 16% IT workforce AI-skilled (MeitY)</span>
+      <span class="badge badge-blue">Global skills gap: 63% of employers cite it</span>
+    </div>
+  </div>
+</div>
+
+<div id="sectors" class="section">
+  <div class="section-sub">Automation risk is task-level, not job-level. Two people with the same title can have vastly different exposure based on what they actually do daily.</div>
+
+  <div class="section-heading">Automation risk by sector <span class="source-tag">Goldman Sachs + McKinsey + Oxford</span></div>
+
+  <div class="bar-row"><div class="bar-label">Legal & Compliance</div><div class="bar-track"><div class="bar-fill" style="width:88%; background:#D85A30;"></div></div><div class="bar-val" style="color:#D85A30">88%</div></div>
+  <div class="bar-row"><div class="bar-label">Financial Services</div><div class="bar-track"><div class="bar-fill" style="width:82%; background:#D85A30;"></div></div><div class="bar-val" style="color:#D85A30">82%</div></div>
+  <div class="bar-row"><div class="bar-label">Customer Service/BPO</div><div class="bar-track"><div class="bar-fill" style="width:78%; background:#D85A30;"></div></div><div class="bar-val" style="color:#D85A30">78%</div></div>
+  <div class="bar-row"><div class="bar-label">Data Entry / Admin</div><div class="bar-track"><div class="bar-fill" style="width:95%; background:#A32D2D;"></div></div><div class="bar-val" style="color:#A32D2D">99%</div></div>
+  <div class="bar-row"><div class="bar-label">Graphic Design</div><div class="bar-track"><div class="bar-fill" style="width:72%; background:#D85A30;"></div></div><div class="bar-val" style="color:#D85A30">72%</div></div>
+  <div class="bar-row"><div class="bar-label">Software Dev (junior)</div><div class="bar-track"><div class="bar-fill" style="width:65%; background:#BA7517;"></div></div><div class="bar-val" style="color:#BA7517">65%</div></div>
+  <div class="bar-row"><div class="bar-label">Healthcare (clinical)</div><div class="bar-track"><div class="bar-fill" style="width:30%; background:#1D9E75;"></div></div><div class="bar-val" style="color:#1D9E75">30%</div></div>
+  <div class="bar-row"><div class="bar-label">Education & Training</div><div class="bar-track"><div class="bar-fill" style="width:25%; background:#1D9E75;"></div></div><div class="bar-val" style="color:#1D9E75">25%</div></div>
+  <div class="bar-row"><div class="bar-label">Construction / Trades</div><div class="bar-track"><div class="bar-fill" style="width:18%; background:#1D9E75;"></div></div><div class="bar-val" style="color:#1D9E75">18%</div></div>
+  <div class="bar-row"><div class="bar-label">AI/ML Engineering</div><div class="bar-track"><div class="bar-fill" style="width:5%; background:#085041;"></div></div><div class="bar-val" style="color:#085041">5%</div></div>
+
+  <div class="section-heading">Daily workflow impact by role type</div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title" style="color:#D85A30">High disruption roles</div>
+      <div class="card-body">
+        <div class="risk-row"><span class="risk-name">Telemarketers</span><span class="risk-pct" style="color:#A32D2D">99%</span></div>
+        <div class="risk-row"><span class="risk-name">Data entry keyers</span><span class="risk-pct" style="color:#A32D2D">99%</span></div>
+        <div class="risk-row"><span class="risk-name">Insurance underwriters</span><span class="risk-pct" style="color:#D85A30">98%</span></div>
+        <div class="risk-row"><span class="risk-name">Basic accounting clerks</span><span class="risk-pct" style="color:#D85A30">96%</span></div>
+        <div class="risk-row"><span class="risk-name">Paralegals</span><span class="risk-pct" style="color:#D85A30">94%</span></div>
+        <div class="risk-row"><span class="risk-name">Junior SW developers</span><span class="risk-pct" style="color:#BA7517">72%</span></div>
+        <div class="risk-row"><span class="risk-name">Medical transcriptionists</span><span class="risk-pct" style="color:#D85A30">90%</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:#1D9E75">Resilient / growing roles</div>
+      <div class="card-body">
+        <div class="risk-row"><span class="risk-name">AI/ML Engineers</span><span class="risk-pct" style="color:#1D9E75">+200%</span></div>
+        <div class="risk-row"><span class="risk-name">Agentic AI Developers</span><span class="risk-pct" style="color:#1D9E75">New role</span></div>
+        <div class="risk-row"><span class="risk-name">Cybersecurity analysts</span><span class="risk-pct" style="color:#1D9E75">+65%</span></div>
+        <div class="risk-row"><span class="risk-name">AI Ethics auditors</span><span class="risk-pct" style="color:#1D9E75">New role</span></div>
+        <div class="risk-row"><span class="risk-name">Big data specialists</span><span class="risk-pct" style="color:#1D9E75">+140%</span></div>
+        <div class="risk-row"><span class="risk-name">Nurses / care workers</span><span class="risk-pct" style="color:#1D9E75">+28%</span></div>
+        <div class="risk-row"><span class="risk-name">Renewable energy techs</span><span class="risk-pct" style="color:#1D9E75">+52%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accent-bar warn">
+    <p><strong>The task audit rule:</strong> If 70%+ of your daily work is routine, digital, and rules-based (A-type), your role is highly exposed. If most of your work involves judgment, relationships, physical presence, or creativity (B/C-type), you're far more resilient. The disruption is task-level, not title-level.</p>
+  </div>
+</div>
+
+<div id="india" class="section">
+  <div class="metric-grid">
+    <div class="metric-card"><div class="metric-label">AI GDP unlock by 2030</div><div class="metric-value" style="color:#1D9E75">$500B</div><div class="metric-sub">Up to; EY/McKinsey range</div></div>
+    <div class="metric-card"><div class="metric-label">AI jobs by 2026</div><div class="metric-value">1M+</div><div class="metric-sub">NASSCOM projection</div></div>
+    <div class="metric-card"><div class="metric-label">IT workforce AI-skilled</div><div class="metric-value" style="color:#D85A30">16%</div><div class="metric-sub">MeitY; massive gap</div></div>
+    <div class="metric-card"><div class="metric-label">Entry-level IT decline</div><div class="metric-value" style="color:#BA7517">-25%</div><div class="metric-sub">EY 2025 analysis</div></div>
+    <div class="metric-card"><div class="metric-label">AI talent pool 2027</div><div class="metric-value">1.25M</div><div class="metric-sub">NASSCOM + Deloitte</div></div>
+    <div class="metric-card"><div class="metric-label">AI GDP by 2035</div><div class="metric-value">$15.7T</div><div class="metric-sub">McKinsey impact estimate</div></div>
+  </div>
+
+  <div class="section-heading">India's AI transition: 3 pathways</div>
+  <div class="three-col">
+    <div class="card">
+      <div class="card-title">IT Services / BPM</div>
+      <div class="card-body">5M+ professionals. Shifting from process execution → AI-enabled decisioning. Entry-level (-25%) but senior/consulting roles growing. New pricing: time-billed → outcome contracts. GCCs are the big opportunity hub.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Customer-facing (BFSI, Retail)</div>
+      <div class="card-body">AI augmenting routine tasks (triage, drafting, scheduling). Breadth before depth: firms building literacy first. Demand for talent blending domain + AI skills. Gartner: $80B call center savings globally by 2026.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">R&D / Product (GCCs)</div>
+      <div class="card-body">India as strategic R&D hub, not just support. Global companies building India AI teams at scale. Roles: AI product ownership, system architecture, AI governance. Premium salaries matching near-global levels.</div>
+    </div>
+  </div>
+
+  <div class="section-heading">Prayagraj / Tier-2 city opportunity</div>
+  <div class="card">
+    <div class="card-title">Why tier-2 is viable in 2026</div>
+    <div class="card-body" style="line-height:1.9">
+      <div class="accent-bar" style="margin-top:0">
+        <p><strong>Remote normalization:</strong> Post-pandemic remote work is now permanent at many product companies and GCCs. Indian AI engineers serving US/EU teams from tier-2 cities earn 2–3x local average salaries without relocation.</p>
+      </div>
+      <div class="accent-bar purple" style="margin-top:0">
+        <p><strong>Cost-of-living arbitrage:</strong> Prayagraj living costs are 60–70% lower than Bangalore/Mumbai. An AI role paying ₹20 LPA remote from Prayagraj gives equivalent purchasing power to ₹35+ LPA in Bangalore.</p>
+      </div>
+      <div class="accent-bar warn" style="margin-top:0">
+        <p><strong>Allahabad University + MNNIT ecosystem:</strong> Emerging local talent base; MNNIT Allahabad has active AI/ML research groups. Local networking through LinkedIn and AGI House India communities is key.</p>
+      </div>
+      <div style="margin-top:12px"><strong>Best-fit remote platforms for Prayagraj:</strong><br>
+      <span class="badge badge-teal">Toptal</span><span class="badge badge-teal">Arc.dev</span><span class="badge badge-teal">Upwork</span><span class="badge badge-blue">Crossover</span><span class="badge badge-blue">Turing.com</span><span class="badge badge-purple">Contra</span><span class="badge badge-purple">Andela</span><span class="badge badge-gray">LinkedIn Remote</span><span class="badge badge-gray">Remotive</span><span class="badge badge-amber">Mindrift (AI training data)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Local opportunities specific to Prayagraj / UP</div>
+    <div class="card-body">
+      <div class="path-step">
+        <div class="step-num"><i class="ti ti-building" aria-hidden="true"></i></div>
+        <div class="step-content"><div class="step-title">Govt. & EdTech AI — Prayagraj advantage</div><div class="step-desc">UP government's Digital UP initiative. Prayagraj being a major educational hub (12+ universities), EdTech AI (personalized learning, assessment AI) has massive local demand. BYJU's, Unacademy, PhysicsWallah all hire remote AI roles.</div></div>
+      </div>
+      <div class="path-step">
+        <div class="step-num"><i class="ti ti-device-laptop" aria-hidden="true"></i></div>
+        <div class="step-content"><div class="step-title">Freelance AI services for local businesses</div><div class="step-desc">Prayagraj's trading, legal, and agricultural sectors are ripe for AI automation consulting. First-mover advantage is massive — very few local AI consultants exist yet.</div></div>
+      </div>
+      <div class="path-step">
+        <div class="step-num"><i class="ti ti-world" aria-hidden="true"></i></div>
+        <div class="step-content"><div class="step-title">Agricultural AI / AgriTech</div><div class="step-desc">UP is India's largest agricultural state. AI crop advisory, precision farming, supply chain AI — all growing sectors with NABARD and government backing. IFFCO and local agri-cooperatives are early adopters.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="skills" class="section">
+  <div class="section-heading">WEF top 10 skills rising to 2030</div>
+  <div class="card" style="padding:0.75rem 1.25rem">
+    <div class="skill-row"><div class="skill-rank">1</div><div class="skill-name">AI & big data</div><span class="badge badge-red">Fastest rising — all sectors</span><div class="skill-trend high">↑↑↑</div></div>
+    <div class="skill-row"><div class="skill-rank">2</div><div class="skill-name">Networks & cybersecurity</div><span class="badge badge-coral">Critical infrastructure</span><div class="skill-trend high">↑↑↑</div></div>
+    <div class="skill-row"><div class="skill-rank">3</div><div class="skill-name">Technological literacy</div><span class="badge badge-amber">Every professional</span><div class="skill-trend high">↑↑</div></div>
+    <div class="skill-row"><div class="skill-rank">4</div><div class="skill-name">Creative thinking</div><span class="badge badge-teal">AI-resistant</span><div class="skill-trend high">↑↑</div></div>
+    <div class="skill-row"><div class="skill-rank">5</div><div class="skill-name">Resilience, flexibility & agility</div><span class="badge badge-teal">AI-resistant</span><div class="skill-trend high">↑↑</div></div>
+    <div class="skill-row"><div class="skill-rank">6</div><div class="skill-name">Curiosity & lifelong learning</div><span class="badge badge-teal">Meta-skill</span><div class="skill-trend high">↑↑</div></div>
+    <div class="skill-row"><div class="skill-rank">7</div><div class="skill-name">Leadership & social influence</div><span class="badge badge-purple">Human edge</span><div class="skill-trend med">↑</div></div>
+    <div class="skill-row"><div class="skill-rank">8</div><div class="skill-name">Analytical thinking</div><span class="badge badge-blue">Augmented by AI</span><div class="skill-trend med">↑</div></div>
+    <div class="skill-row"><div class="skill-rank">9</div><div class="skill-name">Talent management</div><span class="badge badge-purple">Human edge</span><div class="skill-trend med">↑</div></div>
+    <div class="skill-row"><div class="skill-rank">10</div><div class="skill-name">Environmental stewardship</div><span class="badge badge-teal">Green transition</span><div class="skill-trend med">↑</div></div>
+  </div>
+
+  <div class="section-heading">Emerging AI-native roles to target</div>
+  <div class="two-col">
+    <div>
+      <div class="card">
+        <div class="card-title">Technical track</div>
+        <div class="card-body">
+          <span class="badge badge-red">Agentic AI Developer</span>
+          <span class="badge badge-red">LLM / GenAI Engineer</span>
+          <span class="badge badge-coral">MLOps Engineer</span>
+          <span class="badge badge-coral">AI Infrastructure Engineer</span>
+          <span class="badge badge-amber">AI Security Specialist</span>
+          <span class="badge badge-amber">Multimodal AI Engineer</span>
+          <span class="badge badge-blue">RAG Systems Architect</span>
+          <span class="badge badge-blue">AI Testing Engineer</span>
+          <span class="badge badge-gray">Big Data Specialist</span>
+          <span class="badge badge-gray">NLP Engineer</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-title">Non-technical track</div>
+        <div class="card-body">
+          <span class="badge badge-purple">AI Product Manager</span>
+          <span class="badge badge-purple">Prompt Engineer (advanced)</span>
+          <span class="badge badge-teal">AI Ethics Auditor</span>
+          <span class="badge badge-teal">AI UX Designer</span>
+          <span class="badge badge-amber">AI Content Specialist</span>
+          <span class="badge badge-amber">AI Trainer / RLHF Annotator</span>
+          <span class="badge badge-blue">Agent Ops Manager</span>
+          <span class="badge badge-blue">AI Governance Consultant</span>
+          <span class="badge badge-gray">AI-augmented Domain Expert</span>
+          <span class="badge badge-gray">AI Strategy Consultant</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accent-bar">
+    <p><strong>The 2-tier mental model (2026 reality):</strong> Tier 1 = AI fluency — using Claude/ChatGPT/Gemini/Copilot effectively in your domain. This is now a baseline expectation like Excel was in 2010. Tier 2 = AI engineering — building systems, agents, pipelines. This is the frontier that commands 2–5x salary premiums. Know which tier your goal requires and don't waste time on the wrong one.</p>
+  </div>
+</div>
+
+<div id="salaries" class="section">
+  <div class="section-heading">India AI salary landscape 2026 <span class="source-tag">AGI House India · Scaler · Sentpo · Naukri</span></div>
+  <div class="card" style="overflow-x:auto; padding: 0.75rem;">
+    <table class="salary-table">
+      <thead>
+        <tr><th>Role</th><th>Entry (0–2 yr)</th><th>Mid (3–5 yr)</th><th>Senior (6–10 yr)</th><th>Lead/Principal</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Data Scientist</td><td>₹6–12 LPA</td><td>₹15–28 LPA</td><td>₹32–55 LPA</td><td class="hi">₹50–80 LPA</td></tr>
+        <tr><td>ML Engineer</td><td>₹8–15 LPA</td><td>₹18–35 LPA</td><td>₹40–70 LPA</td><td class="hi">₹65–120 LPA</td></tr>
+        <tr><td>GenAI / LLM Engineer</td><td class="mid">₹8–15 LPA</td><td class="hi">₹20–40 LPA</td><td class="hi">₹40–80 LPA</td><td class="hi">₹80–150 LPA</td></tr>
+        <tr><td>Agentic AI Developer</td><td class="mid">₹12–20 LPA</td><td class="hi">₹25–45 LPA</td><td class="hi">₹50–90 LPA</td><td class="hi">₹85+ LPA</td></tr>
+        <tr><td>MLOps Engineer</td><td>₹8–14 LPA</td><td>₹18–32 LPA</td><td>₹35–60 LPA</td><td class="hi">₹60–100 LPA</td></tr>
+        <tr><td>AI Product Manager</td><td>₹10–18 LPA</td><td>₹20–35 LPA</td><td class="hi">₹40–80 LPA</td><td class="hi">₹70–120 LPA</td></tr>
+        <tr><td>AI Researcher</td><td>₹12–20 LPA</td><td>₹25–45 LPA</td><td>₹50–90 LPA</td><td class="hi">₹80–150 LPA</td></tr>
+        <tr><td>Prompt Engineer (adv.)</td><td>₹6–10 LPA</td><td>₹12–25 LPA</td><td>₹25–40 LPA</td><td>₹40–60 LPA</td></tr>
+        <tr><td>AI Ethics / Governance</td><td>₹8–14 LPA</td><td>₹15–28 LPA</td><td>₹30–55 LPA</td><td>₹50–80 LPA</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="section-sub" style="margin-top:8px">All figures in INR Lakhs Per Annum (LPA). Includes base + typical variable. Remote roles serving US/EU clients pay 2–3x these figures.</div>
+
+  <div class="section-heading">Salary premiums by skill</div>
+  <div class="bar-row"><div class="bar-label">LLM/GenAI experience</div><div class="bar-track"><div class="bar-fill" style="width:80%; background:#1D9E75;"></div></div><div class="bar-val">+35%</div></div>
+  <div class="bar-row"><div class="bar-label">Agentic AI / LangGraph</div><div class="bar-track"><div class="bar-fill" style="width:90%; background:#085041;"></div></div><div class="bar-val">+40%</div></div>
+  <div class="bar-row"><div class="bar-label">MLOps / Production ML</div><div class="bar-track"><div class="bar-fill" style="width:65%; background:#1D9E75;"></div></div><div class="bar-val">+25%</div></div>
+  <div class="bar-row"><div class="bar-label">Domain expertise (fin/health)</div><div class="bar-track"><div class="bar-fill" style="width:55%; background:#BA7517;"></div></div><div class="bar-val">+20%</div></div>
+  <div class="bar-row"><div class="bar-label">Indian language NLP</div><div class="bar-track"><div class="bar-fill" style="width:60%; background:#534AB7;"></div></div><div class="bar-val">+25%</div></div>
+  <div class="bar-row"><div class="bar-label">PhD (top institution)</div><div class="bar-track"><div class="bar-fill" style="width:75%; background:#3C3489;"></div></div><div class="bar-val">+50%</div></div>
+
+  <div class="accent-bar warn">
+    <p><strong>The 2026 window:</strong> GenAI/Agentic AI salary premiums are scarcity-driven. Supply is catching up. The window for highest premiums is estimated 2026–2027 before compression. "If you're sitting on the fence about learning LLMs — this is your signal." — buildfastwithai.com analysis (March 2026).</p>
+  </div>
+</div>
+
+<div id="learning" class="section">
+  <div class="section-heading">Learning tier system — choose your path first</div>
+  <div class="two-col">
+    <div class="card" style="border: 2px solid #1D9E75;">
+      <div class="card-title">Tier 1: AI fluency (non-technical)</div>
+      <div class="card-body">For everyone regardless of role. Using AI tools deeply and effectively. Time to competency: 1–3 months.<br><br>
+      <strong>Free resources:</strong><br>
+      <span class="badge badge-teal">Google AI Essentials (Coursera — free)</span>
+      <span class="badge badge-teal">IBM AI Fundamentals (SkillsBuild — free)</span>
+      <span class="badge badge-teal">Andrew Ng: AI For Everyone (free audit)</span>
+      <span class="badge badge-teal">Anthropic's Prompt Engineering guide</span>
+      <span class="badge badge-gray">DeepLearning.AI short courses (many free)</span>
+      </div>
+    </div>
+    <div class="card" style="border: 2px solid #534AB7;">
+      <div class="card-title">Tier 2: AI engineering (technical)</div>
+      <div class="card-body">Building AI systems, agents, pipelines. Requires Python foundation. Time to entry-level: 6–12 months.<br><br>
+      <strong>Priority stack:</strong><br>
+      <span class="badge badge-purple">Python → ML fundamentals → GenAI → Agentic</span>
+      <span class="badge badge-purple">Andrew Ng ML Specialization (Coursera)</span>
+      <span class="badge badge-blue">IBM GenAI Engineering (Coursera ~₹4K/mo)</span>
+      <span class="badge badge-blue">IBM RAG + Agentic AI Certificate</span>
+      <span class="badge badge-amber">Udemy: Complete Agentic AI Engineering (83K students)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading">Top certifications ranked by ROI (2026)</div>
+  <div class="card" style="padding: 0.75rem;">
+    <div class="path-step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">IBM RAG & Agentic AI Professional Certificate <span class="badge badge-red">Highest ROI 2026</span></div>
+        <div class="step-desc">Covers RAG systems, agentic workflows, LangChain, LangGraph, CrewAI, production deployment. Coursera ~₹4K/month. 3–5 months. Salary impact: +₹8–20 LPA at mid-level. Most in-demand skill combination in India right now.</div>
+      </div>
+    </div>
+    <div class="path-step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">Google Cloud Professional ML Engineer</div>
+        <div class="step-desc">Industry-recognized, expires every 2 years forcing currency. Valued by GCCs and MNCs. Pairs well with IBM agentic certificate. Free learning paths via Google Cloud Skills Boost.</div>
+      </div>
+    </div>
+    <div class="path-step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">Microsoft Azure AI Engineer (AI-102)</div>
+        <div class="step-desc">Best for Azure-heavy companies. Covers cognitive services, GenAI solutions, responsible AI. Salary impact: +₹10–20 LPA for mid-level professionals in enterprise roles.</div>
+      </div>
+    </div>
+    <div class="path-step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">DeepLearning.AI Specializations (Andrew Ng)</div>
+        <div class="step-desc">ML Specialization + Deep Learning Specialization = foundational combination. Free to audit, ~₹4K/month for certificate. Essential for anyone targeting ML/AI engineering roles.</div>
+      </div>
+    </div>
+    <div class="path-step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <div class="step-title">Johns Hopkins Agentic AI Certificate (advanced)</div>
+        <div class="step-desc">16-week online program. Python, OpenAI LLMs, reinforcement learning, multi-agent systems. ~$3,000 (₹2.5L). For serious career pivots targeting top-tier roles.</div>
+      </div>
+    </div>
+    <div class="path-step">
+      <div class="step-num">6</div>
+      <div class="step-content">
+        <div class="step-title">IIT Madras Online BS in Data Science <span class="badge badge-amber">India-specific strong signal</span></div>
+        <div class="step-desc">Highly respected Indian credential. Affordable. Strong for those without CS degrees who need an institutional anchor. Pairs well with practical AI certifications above.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accent-bar warn">
+    <p><strong>Critical insight — "The 6-Month Rule":</strong> AI-specific tool knowledge has a 6-month effective shelf life. LangChain APIs changed 3 times in 2024–2025. Focus on durable foundations (Python, ML fundamentals, system design thinking) and learn specific tools just-in-time when a project needs them. One deployed project beats five certifications in every hiring conversation.</p>
+  </div>
+</div>
+
+<div id="action" class="section">
+  <div class="section-heading">Strategic 12-month action plan — Prayagraj base</div>
+
+  <div class="card">
+    <div class="card-title">Phase 1: Foundation (Months 1–3) — Zero cost possible</div>
+    <div class="card-body">
+      <div class="path-step">
+        <div class="step-num">A</div>
+        <div class="step-content"><div class="step-title">Do your task audit</div><div class="step-desc">List 20 things you do weekly. Tag each: A (routine/digital) = automatable, B (judgment) = augmentable, C (hands-on/trust) = resilient. If >70% is A-type, prioritize pivot. This tells you your actual risk, not your job title's risk.</div></div>
+      </div>
+      <div class="path-step">
+        <div class="step-num">B</div>
+        <div class="step-content"><div class="step-title">AI literacy sprint (free)</div><div class="step-desc">Complete Google AI Essentials + Andrew Ng's AI For Everyone. Use Claude, ChatGPT, Gemini daily for real work. Document measurable time savings ("AI saved me 6 hrs/week on X"). This is Tier 1 and takes 4–6 weeks max.</div></div>
+      </div>
+      <div class="path-step">
+        <div class="step-num">C</div>
+        <div class="step-content"><div class="step-title">Python foundation (if technical path)</div><div class="step-desc">freeCodeCamp Python + Kaggle's free Python course. 30–60 mins/day. Reach basic data manipulation (Pandas, NumPy) in 6–8 weeks. This is the prerequisite for everything in Tier 2.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Phase 2: Specialization (Months 4–8)</div>
+    <div class="card-body">
+      <div class="path-step">
+        <div class="step-num">D</div>
+        <div class="step-content"><div class="step-title">Pick your lane and go deep</div><div class="step-desc"><strong>Technical:</strong> Andrew Ng ML Specialization → IBM GenAI Engineering Certificate → IBM RAG + Agentic AI. Build in LangChain, LangGraph, CrewAI. <strong>Non-technical:</strong> Advanced prompt engineering → AI Product Management → domain-specific AI tools. Target a vertical (EdTech, FinTech, AgriTech) that aligns with local Prayagraj opportunities.</div></div>
+      </div>
+      <div class="path-step">
+        <div class="step-num">E</div>
+        <div class="step-content"><div class="step-title">Build 2–3 real portfolio projects</div><div class="step-desc">Must be deployed, not notebooks. Ideas relevant to Prayagraj: (1) Hindi-language AI chatbot for local businesses; (2) Crop advisory RAG system using UP agricultural data; (3) Legal document summarizer for Allahabad High Court case prep. Put everything on GitHub. One real project generates more interviews than 5 certificates.</div></div>
+      </div>
+      <div class="path-step">
+        <div class="step-num">F</div>
+        <div class="step-content"><div class="step-title">Build your visible presence</div><div class="step-desc">LinkedIn: post 1 AI project update per week. Join AGI House India (97 city chapters). Follow AI builders on X/Twitter. Comment meaningfully on AI threads. 40–60% of AI jobs are filled via referrals in India. Remote job platforms: create profiles on Toptal, Arc.dev, Turing.com.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Phase 3: Income activation (Months 9–12)</div>
+    <div class="card-body">
+      <div class="path-step">
+        <div class="step-num">G</div>
+        <div class="step-content"><div class="step-title">Start with AI training gigs (immediate income)</div><div class="step-desc">Mindrift.ai, Scale.ai, Surge.ai pay $15–100/hr for AI training data annotation, RLHF feedback, and model evaluation. No experience needed. This funds your learning while building AI judgment. Available from Prayagraj via remote.</div></div>
+      </div>
+      <div class="path-step">
+        <div class="step-num">H</div>
+        <div class="step-content"><div class="step-title">Target GCC / product company roles</div><div class="step-desc">Bangalore and Hyderabad GCCs hire remote. Apply to: Infosys, TCS (AI roles specifically), Amazon, Google India, Freshworks, Zepto, PharmEasy — all have AI roles and flexible remote policies. Filter job search to: "AI Engineer remote India" on Naukri + LinkedIn. Set alerts. 15–20 applications per week is the cadence.</div></div>
+      </div>
+      <div class="path-step">
+        <div class="step-num">I</div>
+        <div class="step-content"><div class="step-title">Local consulting as a parallel track</div><div class="step-desc">Offer AI automation consulting to Prayagraj businesses (legal firms, coaching institutes, traders). Even ₹5,000–15,000/project builds a portfolio and local reputation. First-mover advantage in tier-2 AI consulting is massive right now — almost no competition exists.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading">Career positioning matrix: your 10-year strategy</div>
+  <div class="card">
+    <div class="card-body">
+      <div class="accent-bar">
+        <p><strong>Play 1 — AI-native builder (highest ceiling):</strong> Python → ML → GenAI → Agentic AI. Target ₹20–50 LPA by year 3. Remote GCC or product company. By 2030: senior AI engineer, ₹50–100 LPA. By 2035: AI architect or AI startup founder.</p>
+      </div>
+      <div class="accent-bar purple">
+        <p><strong>Play 2 — Domain expert + AI (fastest entry):</strong> Take your current expertise (law, education, finance, agriculture) and add AI layer on top. You become an irreplaceable hybrid. AI-augmented domain expert. Target ₹15–35 LPA in 12–18 months. Lower competition, higher trust, India-specific advantage.</p>
+      </div>
+      <div class="accent-bar warn">
+        <p><strong>Play 3 — AI product / strategy (non-technical ceiling):</strong> Understanding AI systems without deep coding. AI Product Manager, AI Governance, Agent Ops. Senior roles reach ₹40–80 LPA. Best path for those with management/business background. Requires Tier 1 fluency + domain expertise + strong communication.</p>
+      </div>
+      <div style="margin-top:12px; padding: 10px; background: var(--color-background-secondary); border-radius: var(--border-radius-md);">
+        <div style="font-size:13px; font-weight:500; color: var(--color-text-primary); margin-bottom:4px;">The universal rule for the next decade:</div>
+        <div style="font-size:13px; color: var(--color-text-secondary); line-height:1.7">AI will not replace people who use AI well. It will replace people who don't. The skill floor is rising, not the ceiling falling. Your goal is to stay above the automation line while building unique human value — judgment, relationships, creativity, domain depth, and the ability to orchestrate AI agents toward meaningful outcomes.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const tabs = ['macro','sectors','india','skills','salaries','learning','action'];
+  const idx = tabs.indexOf(id);
+  document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+}
+</script>
